@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DatingApp.Entities;
+using DatingApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DatingApp.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    [Authorize]
+    public class UsersController : BaseApiController
     {
-        private IUserDetails _userDetails; 
+        private readonly IUserDetails _userDetails; 
         public UsersController(IUserDetails userDetails)
         {
             _userDetails = userDetails;
@@ -27,13 +28,14 @@ namespace DatingApp.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<AppUser>> GetUser(int id)
+        public async Task<ActionResult<AppUser>> GetUserDetailsById(int id)
         {
             try
             {
-                var user = await _userDetails.GetUser(id);
+                var user = await _userDetails.GetUserDetailsById(id);
 
-                if (user == null) { 
+                if (user == null)
+                {
                     return NotFound();
                 }
                 return Ok(user);
@@ -43,6 +45,5 @@ namespace DatingApp.Controllers
                 throw ex;
             }
         }
-
     }
 }
