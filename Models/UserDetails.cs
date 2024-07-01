@@ -3,12 +3,12 @@ using DatingApp.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 
-namespace DatingApp
+namespace DatingApp.Models
 {
     public class UserDetails : IUserDetails
     {
         public DataContext _dataContext;
-        public UserDetails(DataContext dataContext) 
+        public UserDetails(DataContext dataContext)
         {
             _dataContext = dataContext;
         }
@@ -24,7 +24,7 @@ namespace DatingApp
             }
         }
 
-        public async Task<AppUser> GetUser(int id)
+        public async Task<AppUser> GetUserDetailsById(int id)
         {
             try
             {

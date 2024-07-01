@@ -1,10 +1,11 @@
 ﻿using DatingApp.Entities;
+using System.Threading.Tasks;
 
-namespace DatingApp
+namespace DatingApp.Models
 {
     public interface IUserDetails
     {
         Task<List<AppUser>> GetUsersDetails();
-        Task<AppUser> GetUser(int id);
+        Task<AppUser> GetUserDetailsById(int id);
     }
 }
