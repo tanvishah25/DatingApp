@@ -15,6 +15,7 @@ namespace DatingApp.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<List<AppUser>>> GetUsers()
         {
             try
