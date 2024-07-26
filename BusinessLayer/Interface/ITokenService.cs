@@ -1,6 +1,6 @@
 ﻿using DatingApp.Entities;
 
-namespace DatingApp.Models
+namespace DatingApp.BusinessLayer.Interface
 {
     public interface ITokenService
     {

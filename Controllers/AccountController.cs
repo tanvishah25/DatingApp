@@ -1,6 +1,6 @@
-﻿using DatingApp.DTOs;
+﻿using DatingApp.BusinessLayer.Interface;
+using DatingApp.DTOs;
 using DatingApp.Entities;
-using DatingApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using System.Text;
@@ -20,22 +20,22 @@ namespace DatingApp.Controllers
         public async Task<ActionResult<UserDto>> Register([FromBody] RegisterDto registerDto)
         {
             if (await _registerUserDetail.UserExists(registerDto.UserName)) return BadRequest("Username already Taken");
+            return Ok();
+            //var hmac = new HMACSHA512();
+            //var user = new AppUser()
+            //{
+            //    UserName = registerDto.UserName.ToLower(),
+            //    PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
+            //    PasswordSalt = hmac.Key
+            //};
 
-            var hmac = new HMACSHA512();
-            var user = new AppUser()
-            {
-                UserName = registerDto.UserName.ToLower(),
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-                PasswordSalt = hmac.Key
-            };
+            //await _registerUserDetail.RegisterUser(user);
 
-            await _registerUserDetail.RegisterUser(user);
-
-            return new UserDto
-            {
-                Token = _tokenService.CreateToken(user),
-                Username = registerDto.UserName.ToLower(),
-            };
+            //return new UserDto
+            //{
+            //    Token = _tokenService.CreateToken(user),
+            //    Username = registerDto.UserName.ToLower(),
+            //};
         }
 
         [HttpPost("login")]

@@ -1,4 +1,5 @@
-﻿using DatingApp.Entities;
+﻿using DatingApp.BusinessLayer.Interface;
+using DatingApp.Entities;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
