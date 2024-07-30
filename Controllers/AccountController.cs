@@ -20,8 +20,7 @@ namespace DatingApp.Controllers
         public async Task<ActionResult<UserDto>> Register([FromBody] RegisterDto registerDto)
         {
             if (await _registerUserDetail.UserExists(registerDto.UserName)) return BadRequest("Username already Taken");
-            return Ok();
-            //var hmac = new HMACSHA512();
+            return Ok();            //var hmac = new HMACSHA512();
             //var user = new AppUser()
             //{
             //    UserName = registerDto.UserName.ToLower(),
