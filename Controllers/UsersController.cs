@@ -4,6 +4,8 @@ using DatingApp.BusinessLayer.Interface;
 using DatingApp.DTOs;
 using AutoMapper;
 using System.Security.Claims;
+using DatingApp.Extensions;
+using DatingApp.Helpers;
 
 namespace DatingApp.Controllers
 {
@@ -20,13 +22,18 @@ namespace DatingApp.Controllers
 
         [HttpGet]
         [Route("GetAllUsers")]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
         {
             try
             {
-                var users = await _userRepository.GetAllAsync();
-                var usertoreturn= _mapper.Map<IEnumerable<MemberDto>>(users);
-                return Ok(usertoreturn);
+                //var users = await _userRepository.GetAllAsync();
+                //var usertoreturn= _mapper.Map<IEnumerable<MemberDto>>(users);
+                //return Ok(usertoreturn);
+
+                userParams.CurrentUserName = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var users = await _userRepository.GetMembersAsync(userParams);
+                Response.AddPaginationHeader(users);
+                return Ok(users);
             }
             catch (Exception ex)
             {
@@ -59,7 +66,7 @@ namespace DatingApp.Controllers
 
         public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
         {
-            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var username = User.GetUserName();
 
             if (username == null) return BadRequest("No username found in token");
 

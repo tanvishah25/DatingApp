@@ -1,6 +1,7 @@
 ﻿using DatingApp.BusinessLayer;
 using DatingApp.BusinessLayer.Interface;
 using DatingApp.Data;
+using DatingApp.Helpers;
 using DatingApp.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,11 +15,12 @@ namespace DatingApp.Extensions
             {
                 opt.UseSqlServer(config.GetConnectionString("DefaultConnection"));
             });
-            
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IRegisterUserDetail, RegisterUserDetail>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserRepository,UserRepository>();
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<LogUserActivity>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
             return services;
         }
     }
