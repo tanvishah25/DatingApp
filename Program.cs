@@ -1,5 +1,6 @@
 using DatingApp.Data;
 using DatingApp.Extensions;
+using DatingApp.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +15,8 @@ builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
 
 var app = builder.Build();
-app.UseCors(x=>x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+app.UseCors(x=>x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().
+WithOrigins("https://localhost:4200" , "http://localhost:4200"));
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -30,6 +32,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<PresenceHub>("hubs/presence");
+app.MapHub<MessageHub>("hubs/message");
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

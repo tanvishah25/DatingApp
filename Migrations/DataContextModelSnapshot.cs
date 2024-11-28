@@ -4,19 +4,16 @@ using DatingApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace DatingApp.Data.Migrations
+namespace DatingApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241113091306_MessageEntityAdded")]
-    partial class MessageEntityAdded
+    partial class DataContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,6 +79,36 @@ namespace DatingApp.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("DatingApp.Entities.Connection", b =>
+                {
+                    b.Property<string>("ConnectionId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Groupname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ConnectionId");
+
+                    b.HasIndex("Groupname");
+
+                    b.ToTable("Connections");
+                });
+
+            modelBuilder.Entity("DatingApp.Entities.Group", b =>
+                {
+                    b.Property<string>("Groupname")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Groupname");
+
+                    b.ToTable("Groups");
                 });
 
             modelBuilder.Entity("DatingApp.Entities.Message", b =>
@@ -159,6 +186,17 @@ namespace DatingApp.Data.Migrations
                     b.ToTable("Photos");
                 });
 
+            modelBuilder.Entity("DatingApp.Entities.Connection", b =>
+                {
+                    b.HasOne("DatingApp.Entities.Group", "Group")
+                        .WithMany("Connections")
+                        .HasForeignKey("Groupname")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+                });
+
             modelBuilder.Entity("DatingApp.Entities.Message", b =>
                 {
                     b.HasOne("DatingApp.Entities.AppUser", "Recipient")
@@ -196,6 +234,11 @@ namespace DatingApp.Data.Migrations
                     b.Navigation("MessagesSent");
 
                     b.Navigation("Photos");
+                });
+
+            modelBuilder.Entity("DatingApp.Entities.Group", b =>
+                {
+                    b.Navigation("Connections");
                 });
 #pragma warning restore 612, 618
         }
