@@ -22,7 +22,8 @@ namespace DatingApp.Models
 
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.NameIdentifier,user.UserName)
+                new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
+                new Claim(ClaimTypes.Name,user.UserName.ToString())
             };
 
             var tokenDescription = new SecurityTokenDescriptor

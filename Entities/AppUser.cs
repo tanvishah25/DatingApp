@@ -19,6 +19,8 @@ namespace DatingApp.Entities
         public required string City { get; set; }
         public required string Country { get; set; }
         public List<Photo> Photos { get; set; } = [];
+        public List<Message> MessagesSent { get; set; } = [];
+        public List<Message> MessagesReceived { get; set; } = [];
 
         public int GetAge()
         {
